@@ -11,6 +11,15 @@
     $user_input.val('');
   })
 
+  $('#send_message_subway').submit(function(e){
+    e.preventDefault();
+
+    var $user_input_subway = $('#user_input_subway')
+    console.log($user_input_subway.val());
+    socket.emit('newsfeedSubway', $user_input_subway.val());
+    $user_input_subway.val('');
+  })
+
 
  $('#comment_form').submit(function(e){
     e.preventDefault();
@@ -30,7 +39,31 @@
   //   $comment.val('');
   // })
 
+
   socket.on('newsfeed', function(data) {
+    var parsedData = JSON.parse(data);
+    parsedData.posted = new Date(parsedData.posted);
+
+    $('#messages').prepend($('<li>').html(messageTemplate(parsedData)));
+
+    function messageTemplate(template) {
+      var result = '<div class="user">' +
+        '<div class="user-image">' +
+        '<img src="' + template.user.photo + '" alt="">' +
+        '</div>' +
+        '<div class="user-info">' +
+        '<span class="username">' + template.user.username + '</span><br/>' +
+        '<span class="posted">' + template.posted + '</span>' +
+        '</div>' +
+        '</div>' +
+        '<div class="message-content">' +
+        template.message +
+        '</div>';
+      return result;
+    }
+  });
+
+  socket.on('newsfeedSubway', function(data) {
     var parsedData = JSON.parse(data);
     parsedData.posted = new Date(parsedData.posted);
 

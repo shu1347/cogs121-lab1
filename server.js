@@ -158,6 +158,7 @@ io.on('connection', function(socket){
     console.log(comment);
     var user = socket.request.session.passport.user;
     console.log(comment.parent_post_id);
+
     models.Posts.findOne({
             _id: comment.parent_post_id
         },function(err, post) {
@@ -185,6 +186,28 @@ io.on('connection', function(socket){
         });
 
   })
+
+  socket.on('newsfeedSubway', function(msg) {
+    var user = socket.request.session.passport.user;
+
+    var newNewsFeedSubway = new models.SubwayPosts({
+      'user': {
+        'username': user.username,
+        'photo': user.photos[0].value
+      },
+      'message': msg
+    });
+
+
+    newNewsFeedSubway.save(function(err, news) {
+      if(err) console.log(err);
+      io.emit('newsfeedSubway', JSON.stringify(news));
+    });
+
+  });
+
+  /////////////////////
+
   socket.on('newsfeed', function(msg) {
     var user = socket.request.session.passport.user;
 
@@ -196,25 +219,15 @@ io.on('connection', function(socket){
       'message': msg
     });
 
-    var newNewsFeedSubway = new models.SubwayPosts({
-      'user': {
-        'username': user.username,
-        'photo': user.photos[0].value
-      },
-      'message': msg
-    });
+
 
     newNewsFeed.save(function(err, news) {
       if(err) console.log(err);
       io.emit('newsfeed', JSON.stringify(news));
     });
 
-    newNewsFeedSubway.save(function(err, news) {
-      if(err) console.log(err);
-      io.emit('newsfeedSubway', JSON.stringify(news));
-    });
-
   });
+
 })
 
 
