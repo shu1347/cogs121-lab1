@@ -22,7 +22,12 @@ var router = {
     chat: require("./routes/chat"),
     home: require("./routes/home"),
     subway:require("./routes/subway"),
-    lemongrass:require("./routes/lemongrass")
+    lemongrass:require("./routes/lemongrass"),
+    rubios: require("./routes/rubios"),
+    starbucks: require("./routes/starbucks"),
+    santorinis: require("./routes/santorinis"),
+    tapex:require("./routes/tapex"),
+    burgerking:require("./routes/burgerking")
 };
 
 var parser = {
@@ -130,6 +135,12 @@ app.get("/chat", router.chat.view);
 app.get("/home", router.home.view);
 app.get("/subway", router.subway.view);
 app.get("/lemongrass", router.lemongrass.view);
+app.get("/rubios", router.rubios.view);
+app.get("/starbucks", router.starbucks.view);
+app.get("/santorinis", router.santorinis.view);
+app.get("/tapex", router.tapex.view);
+app.get("/burgerking", router.burgerking.view);
+
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback',
@@ -192,8 +203,82 @@ io.on('connection', function(socket){
 
     /////////////////////
 
-
     models.LemongrassPosts.findOne({
+            _id: comment.parent_post_id
+        },function(err, post) {
+            console.log(comment.comment);
+            var newComment = {'username': user.username,
+        'photo': user.photos[0].value,
+        'message': comment.comment
+        }
+        post.comments.push(newComment);
+        post.save();
+        console.log(post);
+        });
+
+    /////////////////////
+
+    models.RubiosPosts.findOne({
+            _id: comment.parent_post_id
+        },function(err, post) {
+            console.log(comment.comment);
+            var newComment = {'username': user.username,
+        'photo': user.photos[0].value,
+        'message': comment.comment
+        }
+        post.comments.push(newComment);
+        post.save();
+        console.log(post);
+        });
+
+    /////////////////////
+
+    models.StarbucksPosts.findOne({
+            _id: comment.parent_post_id
+        },function(err, post) {
+            console.log(comment.comment);
+            var newComment = {'username': user.username,
+        'photo': user.photos[0].value,
+        'message': comment.comment
+        }
+        post.comments.push(newComment);
+        post.save();
+        console.log(post);
+        });
+
+    /////////////////////
+
+    models.SantorinisPosts.findOne({
+            _id: comment.parent_post_id
+        },function(err, post) {
+            console.log(comment.comment);
+            var newComment = {'username': user.username,
+        'photo': user.photos[0].value,
+        'message': comment.comment
+        }
+        post.comments.push(newComment);
+        post.save();
+        console.log(post);
+        });
+
+    /////////////////////
+
+    models.TapexPosts.findOne({
+            _id: comment.parent_post_id
+        },function(err, post) {
+            console.log(comment.comment);
+            var newComment = {'username': user.username,
+        'photo': user.photos[0].value,
+        'message': comment.comment
+        }
+        post.comments.push(newComment);
+        post.save();
+        console.log(post);
+        });
+
+    /////////////////////
+
+    models.BurgerKingPosts.findOne({
             _id: comment.parent_post_id
         },function(err, post) {
             console.log(comment.comment);
@@ -257,6 +342,92 @@ io.on('connection', function(socket){
       io.emit('newsfeedLemongrass', JSON.stringify(news));
     });
   });
+
+  /////////////////////
+
+  socket.on('newsfeedRubios', function(msg) {
+    var user = socket.request.session.passport.user;
+    var newNewsFeedRubios = new models.RubiosPosts({
+      'user': {
+        'username': user.username,
+        'photo': user.photos[0].value
+      },
+      'message': msg
+    });
+    newNewsFeedRubios.save(function(err, news) {
+      if(err) console.log(err);
+      io.emit('newsfeedRubios', JSON.stringify(news));
+    });
+  });
+
+  /////////////////////
+
+  socket.on('newsfeedStarbucks', function(msg) {
+    var user = socket.request.session.passport.user;
+    var newNewsFeedStarbucks = new models.StarbucksPosts({
+      'user': {
+        'username': user.username,
+        'photo': user.photos[0].value
+      },
+      'message': msg
+    });
+    newNewsFeedStarbucks.save(function(err, news) {
+      if(err) console.log(err);
+      io.emit('newsfeedStarbucks', JSON.stringify(news));
+    });
+  });
+
+  /////////////////////
+
+  socket.on('newsfeedSantorinis', function(msg) {
+    var user = socket.request.session.passport.user;
+    var newNewsFeedSantorinis = new models.SantorinisPosts({
+      'user': {
+        'username': user.username,
+        'photo': user.photos[0].value
+      },
+      'message': msg
+    });
+    newNewsFeedSantorinis.save(function(err, news) {
+      if(err) console.log(err);
+      io.emit('newsfeedSantorinis', JSON.stringify(news));
+    });
+  });
+
+  /////////////////////
+
+  socket.on('newsfeedTapex', function(msg) {
+    var user = socket.request.session.passport.user;
+    var newNewsFeedTapex = new models.TapexPosts({
+      'user': {
+        'username': user.username,
+        'photo': user.photos[0].value
+      },
+      'message': msg
+    });
+    newNewsFeedTapex.save(function(err, news) {
+      if(err) console.log(err);
+      io.emit('newsfeedTapex', JSON.stringify(news));
+    });
+  });
+
+  /////////////////////
+
+  socket.on('newsfeedBurgerking', function(msg) {
+    var user = socket.request.session.passport.user;
+    var newNewsFeedBurgerking = new models.BurgerKingPosts({
+      'user': {
+        'username': user.username,
+        'photo': user.photos[0].value
+      },
+      'message': msg
+    });
+    newNewsFeedBurgerking.save(function(err, news) {
+      if(err) console.log(err);
+      io.emit('newsfeedBurgerking', JSON.stringify(news));
+    });
+  });
+
 
 })
 
