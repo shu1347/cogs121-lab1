@@ -1,5 +1,5 @@
 {
-  "name": "cogs121-sp16-ass1",
+  "name": "cogs121-lab1",
   "version": "1.0.0",
   "description": "",
   "main": "models.js",
@@ -18,7 +18,6 @@
     "passport-twitter": "1.0.4",
     "socket.io": "^1.4.5"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prestart": "mongod --dbpath dbpath --logpath log/mongod.log&",
@@ -26,8 +25,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexstolznut/cogs121-lab1"
+    "url": "git+https://github.com/alexstolznut/cogs121-lab1.git"
   },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexstolznut/cogs121-lab1/issues"
+  },
+  "homepage": "https://github.com/alexstolznut/cogs121-lab1#readme"
 }
