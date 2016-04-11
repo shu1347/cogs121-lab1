@@ -21,7 +21,8 @@ var router = {
     index: require("./routes/index"),
     chat: require("./routes/chat"),
     home: require("./routes/home"),
-    subway:require("./routes/subway")
+    subway:require("./routes/subway"),
+    lemongrass:require("./routes/lemongrass")
 };
 
 var parser = {
@@ -128,6 +129,8 @@ app.get("/", router.index.view);
 app.get("/chat", router.chat.view);
 app.get("/home", router.home.view);
 app.get("/subway", router.subway.view);
+app.get("/lemongrass", router.lemongrass.view);
+
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback',
     passport.authenticate('twitter', {
@@ -172,6 +175,8 @@ io.on('connection', function(socket){
         console.log(post);
         });
 
+    /////////////////////
+
     models.SubwayPosts.findOne({
             _id: comment.parent_post_id
         },function(err, post) {
@@ -185,11 +190,27 @@ io.on('connection', function(socket){
         console.log(post);
         });
 
+    /////////////////////
+
+
+    models.LemongrassPosts.findOne({
+            _id: comment.parent_post_id
+        },function(err, post) {
+            console.log(comment.comment);
+            var newComment = {'username': user.username,
+        'photo': user.photos[0].value,
+        'message': comment.comment
+        }
+        post.comments.push(newComment);
+        post.save();
+        console.log(post);
+        });
+
+
   })
 
   socket.on('newsfeedSubway', function(msg) {
     var user = socket.request.session.passport.user;
-
     var newNewsFeedSubway = new models.SubwayPosts({
       'user': {
         'username': user.username,
@@ -197,20 +218,16 @@ io.on('connection', function(socket){
       },
       'message': msg
     });
-
-
     newNewsFeedSubway.save(function(err, news) {
       if(err) console.log(err);
       io.emit('newsfeedSubway', JSON.stringify(news));
     });
-
   });
 
   /////////////////////
 
   socket.on('newsfeed', function(msg) {
     var user = socket.request.session.passport.user;
-
     var newNewsFeed = new models.Posts({
       'user': {
         'username': user.username,
@@ -218,14 +235,27 @@ io.on('connection', function(socket){
       },
       'message': msg
     });
-
-
-
     newNewsFeed.save(function(err, news) {
       if(err) console.log(err);
       io.emit('newsfeed', JSON.stringify(news));
     });
+  });
 
+  /////////////////////
+
+  socket.on('newsfeedLemongrass', function(msg) {
+    var user = socket.request.session.passport.user;
+    var newNewsFeedLemongrass = new models.LemongrassPosts({
+      'user': {
+        'username': user.username,
+        'photo': user.photos[0].value
+      },
+      'message': msg
+    });
+    newNewsFeedLemongrass.save(function(err, news) {
+      if(err) console.log(err);
+      io.emit('newsfeedLemongrass', JSON.stringify(news));
+    });
   });
 
 })

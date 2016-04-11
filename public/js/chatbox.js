@@ -11,6 +11,8 @@
     $user_input.val('');
   })
 
+///////////////
+
   $('#send_message_subway').submit(function(e){
     e.preventDefault();
 
@@ -18,6 +20,17 @@
     console.log($user_input_subway.val());
     socket.emit('newsfeedSubway', $user_input_subway.val());
     $user_input_subway.val('');
+  })
+
+//////////////
+
+  $('#send_message_lemongrass').submit(function(e){
+    e.preventDefault();
+
+    var $user_input_lemongrass = $('#user_input_lemongrass')
+    console.log($user_input_lemongrass.val());
+    socket.emit('newsfeedLemongrass', $user_input_lemongrass.val());
+    $user_input_lemongrass.val('');
   })
 
 
@@ -63,6 +76,8 @@
     }
   });
 
+///////////////////
+
   socket.on('newsfeedSubway', function(data) {
     var parsedData = JSON.parse(data);
     parsedData.posted = new Date(parsedData.posted);
@@ -85,4 +100,30 @@
       return result;
     }
   });
+
+///////////////////
+
+  socket.on('newsfeedLemongrass', function(data) {
+    var parsedData = JSON.parse(data);
+    parsedData.posted = new Date(parsedData.posted);
+
+    $('#messages').prepend($('<li>').html(messageTemplate(parsedData)));
+
+    function messageTemplate(template) {
+      var result = '<div class="user">' +
+        '<div class="user-image">' +
+        '<img src="' + template.user.photo + '" alt="">' +
+        '</div>' +
+        '<div class="user-info">' +
+        '<span class="username">' + template.user.username + '</span><br/>' +
+        '<span class="posted">' + template.posted + '</span>' +
+        '</div>' +
+        '</div>' +
+        '<div class="message-content">' +
+        template.message +
+        '</div>';
+      return result;
+    }
+  });
+
 })($);

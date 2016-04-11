@@ -22,3 +22,4 @@ var postSchema = mongoose.Schema({
 exports.User = mongoose.model('User', userSchema);
 exports.Posts = mongoose.model('Posts', postSchema);
 exports.SubwayPosts = mongoose.model('SubwayPosts', postSchema);
+exports.LemongrassPosts = mongoose.model('LemongrassPosts', postSchema);
