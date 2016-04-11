@@ -1,15 +1,32 @@
-<form action="./chat" method="get">
-    <input type="submit" value="Panda Express"
-         name="Submit" id="frm1_submit" />
-</form>
+<header>
+    <a class="logout" href="/logout">
+        <div class="logout-button">
+            Logout
+        </div>
+    </a>
+</header>
+<section>
+    <div id="inner">
+		<form action="./chat" method="get">
+		    <input type="submit" value="Panda Express"
+		         name="Submit" id="frm1_submit" />
+		</form>
 
-<form action="./subway" method="get">
-    <input type="submit" value="Subway"
-         name="Submit" id="frm1_submit" />
-</form>
+		<form action="./subway" method="get">
+		    <input type="submit" value="Subway"
+		         name="Submit" id="frm1_submit" />
+		</form>
 
-<form action="./lemongrass" method="get">
-    <input type="submit" value="Lemongrass"
-         name="Submit" id="frm1_submit" />
-</form>
-
+		<form action="./lemongrass" method="get">
+		    <input type="submit" value="Lemongrass"
+		         name="Submit" id="frm1_submit" />
+		</form>
+    </div>
+</section>
+<footer>
+    cogs121 lab1
+</footer>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/socket.io.min.js"></script>
+<script src="./js/chatbox.js"></script>
+<script src="./js/search.js"></script>
